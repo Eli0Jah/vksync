@@ -3,7 +3,7 @@ vksync
 
 Синхронизация музыки Вконтакте [Linux bash]
 
-Скирпт взят отсюда http://forum.ubuntu.ru/index.php?PHPSESSID=7s4tu71fd71mqo5ak5ld6a5sf5&topic=166168.0<br/>
+Скирпт взят отсюда <a href="http://forum.ubuntu.ru/index.php?PHPSESSID=7s4tu71fd71mqo5ak5ld6a5sf5&topic=166168.0">sync muzic vkontakte 2 local папка (сыро но работать должно) :)</a><br/>
 Немного допилен:
 <br/>
 *папка хранения скрипта /home/%username%/Музыка/scripts/<br/>
