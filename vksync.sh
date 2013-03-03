@@ -1,4 +1,13 @@
 #!/bin/bash
+#Немного самовлюбленного программирования
+go=0
+for (( $go ; $go<2; )) do
+echo '|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||';
+echo 'Добро пожаловать в скрипт синхронизации музыки из Вконтакте с вашим жестким диском, да и не только с ним.';
+echo 'Начнем? (Y/N)';
+read gogo
+if [[ "$gogo" = "Y" ]];then go=2;else exit 0; fi
+done
 
 # Папка, в которой лежит скрипт и плейлист
 cd ./Музыка/script/
@@ -18,7 +27,6 @@ select var in `ls | grep '\.m3u'`
         break  # если 'break' убрать, то получится бесконечный цикл.;
         done
 fi
- 
 # Сохраняем предидущую версию плейлиста, разбитого на ссылки и названия треков
 if [ -z $(ls | grep links.old) ]; then echo нет файла links.old создаю....; touch links.old; fi; 
 if [ -z $(ls | grep names.old) ]; then echo нет файла names.old создаю....; touch names.old; fi;
@@ -58,6 +66,18 @@ sed -i $audio,$allurl'd' .to_mv
 # Проверяем добавились ли треки
 if [ $(cat .to_mv | wc -l) = 0 ]; then echo треков не добавилось - выходим; exit 0; fi 
 
+#Спросим у пользователя, куда сохранить его музыку и переспросим (столько раз, сколько нужно), вдруг ошибся ^_^
+agr=0
+for (( $agr ; $agr<2; )) do
+echo '|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||';
+echo 'Куда сохранить музыку? Нажмите ENTER, если не хотите менять путь (по-умолчанию /home/%пользователь%/Музыка)...';
+read path_to_music
+if [[ "$path_to_music" = "" ]];then $path_to_music=./Музыка/script/; fi
+echo Папка для сохранения: $path_to_music. 'Все верно? (Y/N)';
+read agree
+if [[ "$agree" = "Y" ]];then agr=2;else agr=0; fi
+done
+
 # Скачиваем
 cd noname
 wget -c -i ../.to_mv
@@ -76,14 +96,13 @@ for i in $(seq $LINES); do
         NAME=$(head -n 1 .to_rename | sed "s/\r//g")
         sed -i 1d .to_mv
         sed -i 1d .to_rename
-        cp -l "noname/$FILE" "../$NAME.mp3" #так будут дубликаты как в плейлисте, вдруг Вы спецом так захотели
+        cp -l "noname/$FILE" "$path_to_music/$NAME.mp3" #так будут дубликаты как в плейлисте, вдруг Вы спецом так захотели
   rm noname/$FILE
 done
 
 # Удаляем лишние файлы
 rm .to_mv
 rm .to_rename
-rm noname
 
 # Выводим сообщение пользователю
 
